@@ -1,4 +1,4 @@
-const { STATUSES } = require('../utils/statuses');
+const { STATUSES } = require('../constants/statuses');
 
 const allowedCors = [
   'https://diplodrakon.nomoredomainsmonster.ru',

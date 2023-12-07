@@ -8,6 +8,12 @@ const bodyParser = require('body-parser');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
+const { auth } = require('./middlewares/auth');
+const { handleError } = require('./errors/errors');
+
+const usersRouter = require('./routes/users');
+const { createUser, login, logout } = require('./controllers/users');
+const { userCreationSchema, userLoginSchema } = require('./schemas/users');
 
 require('dotenv').config();
 
@@ -34,7 +40,14 @@ app.use(cors);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.post('/signin', celebrate(userLoginSchema), login);
+app.post('/signup', celebrate(userCreationSchema), createUser);
+app.post('/signout', logout);
+
+app.use('/users', auth, usersRouter);
+
 app.use(errorLogger);
 app.use(errors());
+app.use((err, req, res, next) => {handleError({ err, req, res, next })});
 
 app.listen(PORT);
