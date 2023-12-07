@@ -7,6 +7,7 @@ const { celebrate, errors } = require('celebrate');
 const bodyParser = require('body-parser');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { cors } = require('./middlewares/cors');
 
 require('dotenv').config();
 
@@ -29,6 +30,7 @@ mongoose.connect(DB_URL, {
 app.use(helmet());
 app.use(limiter);
 app.use(requestLogger);
+app.use(cors);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
