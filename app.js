@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const { celebrate, errors } = require('celebrate');
 const bodyParser = require('body-parser');
 
+const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
 const { auth } = require('./middlewares/auth');
@@ -18,13 +18,6 @@ const { userCreationSchema, userLoginSchema } = require('./schemas/users');
 require('dotenv').config();
 
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 const app = express();
 
@@ -48,6 +41,10 @@ app.use('/users', auth, usersRouter);
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res, next) => {handleError({ err, req, res, next })});
+app.use((err, req, res, next) => {
+  handleError({
+    err, req, res, next,
+  });
+});
 
 app.listen(PORT);
