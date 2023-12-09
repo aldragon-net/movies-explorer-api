@@ -1,5 +1,5 @@
 const Movie = require('../models/movie');
-const { BadRequestError, ForbiddenError, NotFoundError } = require('../errors/errors');
+const { BadRequestError, ForbiddenError, NotFoundError } = require('../errors');
 const { MESSAGES } = require('../constants/messages');
 const { STATUSES } = require('../constants/statuses');
 

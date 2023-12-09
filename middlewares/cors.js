@@ -1,10 +1,6 @@
 const { STATUSES } = require('../constants/statuses');
+const { DOMAINS: allowedCors } = require('../config');
 
-const allowedCors = [
-  'https://diplodrakon.nomoredomainsmonster.ru',
-  'http://diplodrakon.nomoredomainsmonster.ru',
-  'localhost:3000',
-];
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
 module.exports.cors = (req, res, next) => {

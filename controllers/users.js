@@ -1,25 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { BadRequestError, DuplicateError, NotFoundError } = require('../errors/errors');
+const { BadRequestError, DuplicateError, NotFoundError } = require('../errors');
 const { STATUSES } = require('../constants/statuses');
 const { MESSAGES } = require('../constants/messages');
-
-require('dotenv').config();
-
-const { NODE_ENV, JWT_SECRET } = process.env;
-const JWT_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'dev-not-so-secret-key';
-const COOKIES_OPTIONS = NODE_ENV === 'production'
-  ? {
-    maxAge: 3600000 * 24 * 7,
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-  }
-  : {
-    maxAge: 3600000 * 24 * 7,
-    httpOnly: true,
-  };
+const { JWT_KEY, COOKIES_OPTIONS } = require('../config');
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)

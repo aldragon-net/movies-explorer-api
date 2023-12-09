@@ -9,7 +9,7 @@ const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
 const { auth } = require('./middlewares/auth');
-const { handleError, NotFoundError } = require('./errors/errors');
+const { handleError, NotFoundError } = require('./errors');
 
 const moviesRouter = require('./routes/movies');
 const usersRouter = require('./routes/users');
@@ -17,10 +17,7 @@ const { createUser, login, logout } = require('./controllers/users');
 const { userCreationSchema, userLoginSchema } = require('./schemas/users');
 
 const { MESSAGES } = require('./constants/messages');
-
-require('dotenv').config();
-
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
+const { PORT, DB_URL } = require('./config');
 
 const app = express();
 
