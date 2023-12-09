@@ -9,11 +9,14 @@ const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
 const { auth } = require('./middlewares/auth');
-const { handleError } = require('./errors/errors');
+const { handleError, NotFoundError } = require('./errors/errors');
 
+const moviesRouter = require('./routes/movies');
 const usersRouter = require('./routes/users');
 const { createUser, login, logout } = require('./controllers/users');
 const { userCreationSchema, userLoginSchema } = require('./schemas/users');
+
+const { MESSAGES } = require('./constants/messages');
 
 require('dotenv').config();
 
@@ -38,6 +41,8 @@ app.post('/signup', celebrate(userCreationSchema), createUser);
 app.post('/signout', logout);
 
 app.use('/users', auth, usersRouter);
+app.use('/movies', auth, moviesRouter);
+app.use('*', auth, (req, res, next) => { next(new NotFoundError(MESSAGES.ROUTE_NOT_FOUND)); });
 
 app.use(errorLogger);
 app.use(errors());
