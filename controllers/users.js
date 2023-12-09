@@ -63,8 +63,7 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.logout = (req, res, next) => {
-  res.cookie('jwt', 'none', { ...COOKIES_OPTIONS, maxAge: 5000 });
-  res.send({ message: 'Logged out' })
-    .catch(next);
+module.exports.logout = (req, res) => {
+  res.cookie('jwt', 'none', { ...COOKIES_OPTIONS, maxAge: 1000 });
+  res.send({ message: MESSAGES.LOGOUT });
 };
