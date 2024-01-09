@@ -21,6 +21,9 @@ module.exports.updateUser = (req, res, next) => {
   )
     .then((user) => res.send(user))
     .catch((err) => {
+      if (err.code === 11000) {
+        return next(new DuplicateError(MESSAGES.USER_EXISTS));
+      }
       if (err.name === 'ValidationError') {
         return next(new BadRequestError(MESSAGES.BAD_USER_DATA));
       }
